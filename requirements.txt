@@ -2,3 +2,5 @@ streamlit
 streamlit_option_menu
 pandas
 requests
+sklearn.preprocessing
+sklearn.neighbors
