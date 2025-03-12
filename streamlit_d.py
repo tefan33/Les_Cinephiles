@@ -14,7 +14,7 @@ data.dropna(subset='genres', inplace=True)
 
 st.set_page_config(layout='wide')
 
-
+print(my_api_key)
 
 
 # fonction de récupération des vignettes
