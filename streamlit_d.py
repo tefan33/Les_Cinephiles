@@ -63,7 +63,7 @@ if selection == 'ETUDES ET STATISTIQUES':
     st.title("Périmètre d'études")
     st.subheader('', divider='orange')
     st.write('')
-    st.image('images/Pop_Creuse.JPG')
+    st.image('images/Pop_Creuse.jpg')
     st.divider()
     st.write('')
     st.image('images/hab_CSP.JPG')
