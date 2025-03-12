@@ -12,10 +12,10 @@ my_api_key = 'f3bc9f4ec12e6427fd38bab1b6bf6486'
 st.set_page_config(layout='wide')
 
 # Affichage du logo au-dessus de la sidebar
-# logo_path = "../logo3.jpg"
-# st.sidebar.image(
-#                 logo_path,
-#                  )
+logo_path = 'logo3.jpg'
+st.sidebar.image(
+                logo_path,
+                 )
 
 
 # fonction de récupération des vignettes
