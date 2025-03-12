@@ -1,5 +1,5 @@
-option_menu
 streamlit
-pandas==2.1.4
-request==2.32.3
-python==3.5
+streamlit_option_menu
+pandas
+request
+python
