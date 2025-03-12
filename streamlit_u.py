@@ -6,8 +6,7 @@ import requests
 # DATAFRAME DE BASE #
 data = pd.read_csv('global.zip')
 
-# api key
-my_api_key = 'f3bc9f4ec12e6427fd38bab1b6bf6486'
+my_api_key = st.secrets["MY_API_KEYS"]
 
 st.set_page_config(layout='wide')
 

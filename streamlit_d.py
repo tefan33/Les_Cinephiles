@@ -2,15 +2,12 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
 import requests
-import os
 my_api_key = st.secrets["MY_API_KEYS"]
-#my_api_key = os.getenv('MY_API_KEYS')
+
 
 # DATAFRAME DE BASE #
 data = pd.read_csv('global.zip')
 data.dropna(subset='genres', inplace=True)
-# api key
-#my_api_key = 'f3bc9f4ec12e6427fd38bab1b6bf6486'
 
 st.set_page_config(layout='wide')
 
