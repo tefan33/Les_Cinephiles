@@ -29,10 +29,10 @@ def get_poster_url(movie_id, api_key):
 
 
 # Affichage du logo au-dessus de la sidebar
-# logo_path = 'logo3.JPG'
-# st.sidebar.image(
-#                 logo_path
-#                  )
+logo_path = 'images/logo3.JPG'
+st.sidebar.image(
+                logo_path
+                 )
 
 # --- INSTANCIATION DU MENU VIA ST.SIDEBAR ---#
 with st.sidebar:
@@ -63,16 +63,16 @@ if selection == 'ETUDES ET STATISTIQUES':
     st.title("Périmètre d'études")
     st.subheader('', divider='orange')
     st.write('')
-    st.image('https://www.fnf.fr/choisir-dadopter-un-chien/', use_container_width=True)
+    st.image('images/Pop_Creuse.JPG')
     st.divider()
     st.write('')
-    st.image('hab_CSP.JPG', use_container_width=True)
+    st.image('images/hab_CSP.JPG')
     st.divider()
     st.write('')
-    st.image('films_genre.PNG', use_container_width=False)
+    st.image('images/films_genre.png')
     st.divider()
     st.write('')
-    st.image('films_genre_35_ans.JPG', use_container_width=True)
+    st.image('images/films_genre_35_ans.JPG')
 
 
 # ----------- RECOMMANDATIONS DE FILMS --------------------------#
