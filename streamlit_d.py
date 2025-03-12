@@ -14,7 +14,7 @@ st.set_page_config(layout='wide')
 # Affichage du logo au-dessus de la sidebar
 logo_path = 'logo3.jpg'
 st.sidebar.image(
-                logo_path,
+                logo_path
                  )
 
 
