@@ -63,7 +63,7 @@ if selection == 'ETUDES ET STATISTIQUES':
     st.title("Périmètre d'études")
     st.subheader('', divider='orange')
     st.write('')
-    st.image('Pop_Creuse.JPG', use_container_width=True)
+    st.image('https://www.fnf.fr/choisir-dadopter-un-chien/', use_container_width=True)
     st.divider()
     st.write('')
     st.image('hab_CSP.JPG', use_container_width=True)
