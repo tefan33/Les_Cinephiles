@@ -27,6 +27,7 @@ def get_poster_url(movie_id, api_key):
     else:
         st.write(movie_id)
 
+
 # Affichage du logo au-dessus de la sidebar
 logo_path = 'logo3.jpg'
 st.sidebar.image(
@@ -49,7 +50,7 @@ with st.sidebar:
                             'COMEDIE',
                             "ACTION / AVENTURE",
                             'THRILLER / CRIME',
-                            'RECHERCHE PAR FILM'
+                            'RECHERCHE PAR FILM',
                         ]
                     )
                 )
