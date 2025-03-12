@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 
 # DATAFRAME DE BASE #
-data = pd.read_csv('https://raw.githubusercontent.com/tefan33/Les_Cinephiles/main/global.zip')
+data = pd.read_csv('global.zip')
 data.dropna(subset='genres', inplace=True)
 # api key
 my_api_key = 'f3bc9f4ec12e6427fd38bab1b6bf6486'
