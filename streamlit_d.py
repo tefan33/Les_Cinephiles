@@ -3,8 +3,8 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 import requests
 import os
-
-my_api_key = os.getenv('MY_API_KEY')
+my_api_key = st.secrets["MY_API_KEY"]
+#my_api_key = os.getenv('MY_API_KEY')
 
 # DATAFRAME DE BASE #
 data = pd.read_csv('global.zip')
