@@ -61,18 +61,18 @@ with st.sidebar:
 # ==> les trois films les mieux notés, etc...
 if selection == 'ETUDES ET STATISTIQUES':
     st.title("Périmètre d'études")
-    # st.subheader('', divider='orange')
-    # st.write('')
-    # st.image('Pop age creuse.jpg', use_container_width=True)
-    # st.divider()
-    # st.write('')
-    # st.image('Nb hab csp.JPG', use_container_width=True)
-    # st.divider()
-    # st.write('')
-    # st.image('Nb films par genre.PNG', use_container_width=False)
-    # st.divider()
-    # st.write('')
-    # st.image('films tranches age sup 35 ans.JPG', use_container_width=True)
+    st.subheader('', divider='orange')
+    st.write('')
+    st.image('Pop_Creuse.JPG', use_container_width=True)
+    st.divider()
+    st.write('')
+    st.image('hab_CSP.JPG', use_container_width=True)
+    st.divider()
+    st.write('')
+    st.image('films_genre.PNG', use_container_width=False)
+    st.divider()
+    st.write('')
+    st.image('films_genre_35_ans.JPG', use_container_width=True)
 
 
 # ----------- RECOMMANDATIONS DE FILMS --------------------------#
