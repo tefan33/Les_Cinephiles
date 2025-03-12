@@ -66,13 +66,13 @@ if selection == 'ETUDES ET STATISTIQUES':
     st.image('images/Pop_Creuse.jpg')
     st.divider()
     st.write('')
-    st.image('images/hab_CSP.JPG')
+    st.image('images/hab_CSP.jpg')
     st.divider()
     st.write('')
     st.image('images/films_genre.png')
     st.divider()
     st.write('')
-    st.image('images/films_genre_35_ans.JPG')
+    st.image('images/films_genre_35_ans.jpg')
 
 
 # ----------- RECOMMANDATIONS DE FILMS --------------------------#
