@@ -6,6 +6,7 @@ import requests
 # DATAFRAME DE BASE #
 data = pd.read_csv('global.zip')
 
+
 my_api_key = st.secrets["MY_API_KEYS"]
 
 st.set_page_config(layout='wide')
@@ -67,7 +68,7 @@ with st.sidebar:
 # sera affiché sur la homepage, une recommandation ==> les trois films les mieux notés, etc...
 if selection == 'ACCUEIL':
     st.title("Bienvenu(e) sur le site des Cinéphiles")
-    st.subheader('A ne pas rater !', divider='orange')
+    st.subheader('A ne pas rater ! (Films de 2024 les mieux notés)', divider='orange')
     st.write('')
 
     # on chercher les meilleurs films de 2024 qui ont eu plus de 100 000 votes. On ne conserve que les données
@@ -154,7 +155,7 @@ if selection == 'ACCUEIL':
 elif selection == 'RECOMMANDATION DE FILMS':
     st.title('Recherche par film')
 
-    st.subheader('', divider='orange')
+    st.write('(Recherche, par machine learning, des 3 films les plus proches du titre sélectionné )', divider='orange')
 
     # DATAFRAME MACHINE LEARNING créé à part.
     df_ml = pd.read_csv('df_ml_1')
@@ -290,6 +291,7 @@ elif selection == "RECHERCHE PAR ACTEUR":  # insertion par user
     st.write('')
     # affichage du dataframe filtré cf. selectbox
     acteur_selectionne = df_actor.loc[df_actor['primaryName'] == choix_acteur]
+    st.write("Films de l'acteur sélectionné")
     st.dataframe(
                 acteur_selectionne,
                 width=700,
@@ -385,6 +387,28 @@ elif selection == 'RECHERCHE DE FILM':
             st.write(synopsis or 'Aucun synopsis disponible')
         else:
             st.write("Aucune information trouvée pour ce film.")  # message si pas d'info trouvée pour le film"
+        headers = {
+                    "accept": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
+            }
+        url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
+        response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
+        if response_video.status_code == 200:
+            video_data = response_video.json().get('results', [])
+            trailers = [
+                ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
+                ]
+            if trailers:
+                trailer_key = trailers[0]['key']
+                youtube_url = f"https://www.youtube.com/embed/{trailer_key}"
+
+                # Utilisation de HTML pour ajuster la taille de la vidéo
+                st.markdown(f"""
+                    <br><br><br><iframe width="600" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                """, unsafe_allow_html=True)
+            else:
+                st.write('Aucune bande-annonce disponible pour ce film')
+
 
     with col2:
         if data_tmdb:
@@ -397,20 +421,3 @@ elif selection == 'RECHERCHE DE FILM':
             st.image(url_affiche, caption=choix_films_all)  # on affiche le poster
         else:
             st.write("Aucune affiche trouvée pour ce film.")  # message si pas d'affiche trouvée"
-
-    st.divider()
-
-    url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
-    response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
-    if response_video.status_code == 200:
-        video_data = response_video.json().get('results', [])
-        trailers = [
-            ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
-            ]
-        if trailers:
-            trailer_key = trailers[0]['key']
-            youtube_url = f"https://www.youtube.com/watch?v={trailer_key}"
-            st.subheader('Bande-annonce:')
-            st.video(youtube_url)
-        else:
-            st.write('Aucune bande-annonce disponible pour ce film')

@@ -5,13 +5,13 @@ import requests
 my_api_key = st.secrets["MY_API_KEYS"]
 
 
+
 # DATAFRAME DE BASE #
 data = pd.read_csv('global.zip')
 data.dropna(subset='genres', inplace=True)
 
 st.set_page_config(layout='wide')
 
-print(my_api_key)
 
 
 # fonction de récupération des vignettes
@@ -61,6 +61,7 @@ with st.sidebar:
 # ==> les trois films les mieux notés, etc...
 if selection == 'ETUDES ET STATISTIQUES':
     st.title("Périmètre d'études")
+    st.write("Analyse statistique des données du Cinéma dans la creuse et sur notre base créée avec l'API https://www.themoviedb.org/")
     st.subheader('', divider='orange')
     st.write('')
     st.image('images/Pop_Creuse.jpg')
@@ -80,7 +81,7 @@ if selection == 'ETUDES ET STATISTIQUES':
 
 elif selection == 'RECOMMANDATIONS DE FILMS ANNEE 2024':
     st.title("Les 12 films plébiscités en 2024")
-    st.write('')
+    st.write("(Films de l'année 2024 les mieux notés)")
 
     # on chercher les meilleurs films de 2024 qui ont eu plus de 100 000 votes. On ne conserve que les données
     # que l'on veut montrer
@@ -140,7 +141,7 @@ elif selection == 'RECOMMANDATIONS DE FILMS ANNEE 2024':
 
 elif selection == 'RECOMMANDATIONS DE FILMS DEPUIS 1960':
     st.title("Les 12 films plébiscités depuis 1960")
-    st.write('')
+    st.write("(Films les mieux notés entre 1960 et 2024)")
 
     # nous effectuons exactement la même chose que précédemment mais en prenant la base entière au lieu de 2024
     data2 = data
@@ -398,6 +399,28 @@ elif selection == 'DRAME':
                 st.write(synopsis or 'Aucun synopsis disponible')
             else:
                 st.write("Aucune information trouvée pour ce film.")  # message si pas d'info trouvée pour le film"
+            
+            headers = {
+                    "accept": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
+            }
+            url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
+            response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
+            if response_video.status_code == 200:
+                video_data = response_video.json().get('results', [])
+                trailers = [
+                    ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
+                    ]
+                if trailers:
+                    trailer_key = trailers[0]['key']
+                    youtube_url = f"https://www.youtube.com/embed/{trailer_key}"
+
+                    # Utilisation de HTML pour ajuster la taille de la vidéo
+                    st.markdown(f"""
+                        <br><br><br><iframe width="600" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.write('Aucune bande-annonce disponible pour ce film')
 
     with col2:
         if data_tmdb:
@@ -411,27 +434,6 @@ elif selection == 'DRAME':
         else:
             st.write("Aucune affiche trouvée pour ce film.")  # message si pas d'affiche trouvée"
 
-    st.divider()
-
-    headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
-        }
-
-    url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
-    response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
-    if response_video.status_code == 200:
-        video_data = response_video.json().get('results', [])
-        trailers = [
-            ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
-            ]
-        if trailers:
-            trailer_key = trailers[0]['key']
-            youtube_url = f"https://www.youtube.com/watch?v={trailer_key}"
-            st.subheader('Bande-annonce:')
-            st.video(youtube_url)
-        else:
-            st.write('Aucune bande-annonce disponible pour ce film')
 
 
 # ------------------ SELECTION FILM COMEDIE -------------------#
@@ -534,6 +536,27 @@ elif selection == 'COMEDIE':
                 st.write(synopsis or 'Aucun synopsis disponible')
             else:  # message si pas d'info trouvée pour le film"
                 st.write("Aucune information trouvée pour ce film.")
+            headers = {
+                    "accept": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
+            }
+            url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
+            response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
+            if response_video.status_code == 200:
+                video_data = response_video.json().get('results', [])
+                trailers = [
+                    ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
+                    ]
+                if trailers:
+                    trailer_key = trailers[0]['key']
+                    youtube_url = f"https://www.youtube.com/embed/{trailer_key}"
+
+                    # Utilisation de HTML pour ajuster la taille de la vidéo
+                    st.markdown(f"""
+                        <br><br><br><iframe width="600" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.write('Aucune bande-annonce disponible pour ce film')
 
     with col2:
         if data_tmdb:
@@ -546,28 +569,6 @@ elif selection == 'COMEDIE':
             st.image(url_affiche, caption=choix_comedie)  # on affiche le poster
         else:
             st.write("Aucune affiche trouvée pour ce film.")  # message si pas d'affiche trouvée"
-
-    st.divider()
-
-    headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
-        }
-
-    url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
-    response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
-    if response_video.status_code == 200:
-        video_data = response_video.json().get('results', [])
-        trailers = [
-            ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
-            ]
-        if trailers:
-            trailer_key = trailers[0]['key']
-            youtube_url = f"https://www.youtube.com/watch?v={trailer_key}"
-            st.subheader('Bande-annonce:')
-            st.video(youtube_url)
-        else:
-            st.write('Aucune bande-annonce disponible pour ce film')
 
 
 # ------------------ SELECTION FILM ACTION/ AVENTURE -------------------#
@@ -661,6 +662,27 @@ elif selection == "ACTION / AVENTURE":
             else:
                 film_id = None  # on declare = None pour ne pas avoir d'erreur
                 st.write("Aucune information trouvée pour ce film.")  # message si pas d'info trouvée pour le film"
+            headers = {
+                    "accept": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
+            }
+            url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
+            response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
+            if response_video.status_code == 200:
+                video_data = response_video.json().get('results', [])
+                trailers = [
+                    ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
+                    ]
+                if trailers:
+                    trailer_key = trailers[0]['key']
+                    youtube_url = f"https://www.youtube.com/embed/{trailer_key}"
+
+                    # Utilisation de HTML pour ajuster la taille de la vidéo
+                    st.markdown(f"""
+                        <br><br><br><iframe width="600" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.write('Aucune bande-annonce disponible pour ce film')
 
     with col2:
         poster_path = None  # on declare = None pour ne pas avoir d'erreur
@@ -674,28 +696,6 @@ elif selection == "ACTION / AVENTURE":
             st.image(url_affiche, caption=choix_action_aventure)  # on affiche le poster
         else:
             st.write("Aucune affiche trouvée pour ce film.")  # message si pas d'affiche trouvée"
-
-    st.divider()
-
-    headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
-        }
-
-    url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
-    response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
-    if response_video.status_code == 200:
-        video_data = response_video.json().get('results', [])
-        trailers = [
-            ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
-            ]
-        if trailers:
-            trailer_key = trailers[0]['key']
-            youtube_url = f"https://www.youtube.com/watch?v={trailer_key}"
-            st.subheader('Bande-annonce:')
-            st.video(youtube_url)
-        else:
-            st.write('Aucune bande-annonce disponible pour ce film')
 
 
 # ------------------ SELECTION FILM THRILLER / CRIME -------------------#
@@ -791,6 +791,28 @@ elif selection == 'THRILLER / CRIME':
             else:
                 st.write("Aucune information trouvée pour ce film.")  # message si pas d'info trouvée pour le film"
 
+            headers = {
+                    "accept": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
+            }
+            url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
+            response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
+            if response_video.status_code == 200:
+                video_data = response_video.json().get('results', [])
+                trailers = [
+                    ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
+                    ]
+                if trailers:
+                    trailer_key = trailers[0]['key']
+                    youtube_url = f"https://www.youtube.com/embed/{trailer_key}"
+
+                    # Utilisation de HTML pour ajuster la taille de la vidéo
+                    st.markdown(f"""
+                        <br><br><br><iframe width="600" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.write('Aucune bande-annonce disponible pour ce film')
+
     with col2:
         if data_tmdb:
             poster_path = film_data.get('poster_path')
@@ -802,29 +824,6 @@ elif selection == 'THRILLER / CRIME':
             st.image(url_affiche, caption=choix_thriller_crime)  # on affiche le poster
         else:
             st.write("Aucune affiche trouvée pour ce film.")  # message si pas d'affiche trouvée"
-
-    st.divider()
-
-    headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
-        }
-
-    url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
-    response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
-    if response_video.status_code == 200:
-        video_data = response_video.json().get('results', [])
-        trailers = [
-            ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
-            ]
-        if trailers:
-            trailer_key = trailers[0]['key']
-            youtube_url = f"https://www.youtube.com/watch?v={trailer_key}"
-            st.subheader('Bande-annonce:')
-            st.video(youtube_url)
-        else:
-            st.write('Aucune bande-annonce disponible pour ce film')
-
 
 # ----------------- TOUS LES FILMS ----------------#
 elif selection == 'RECHERCHE PAR FILM':
@@ -914,6 +913,28 @@ elif selection == 'RECHERCHE PAR FILM':
         else:
             st.write("Aucune information trouvée pour ce film.")  # message si pas d'info trouvée pour le film"
 
+        headers = {
+                    "accept": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzliMjE5OTY2YjFiYTczNDliMTFiNjQxNWQ2ZGFjZiIsIm5iZiI6MTczNDU5NjIxNi45NTM5OTk4LCJzdWIiOiI2NzYzZDY3ODU4MWEzYzA1MDdhYjBjODIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ep8YcNVjt4GmmtNlO6wYBoBJxfTNwVjs5Ug0B0PuMKI"
+            }
+        url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
+        response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
+        if response_video.status_code == 200:
+            video_data = response_video.json().get('results', [])
+            trailers = [
+                ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
+                ]
+            if trailers:
+                trailer_key = trailers[0]['key']
+                youtube_url = f"https://www.youtube.com/embed/{trailer_key}"
+
+                # Utilisation de HTML pour ajuster la taille de la vidéo
+                st.markdown(f"""
+                    <br><br><br><iframe width="600" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                """, unsafe_allow_html=True)
+            else:
+                st.write('Aucune bande-annonce disponible pour ce film')
+
     with col2:
         if data_tmdb:
             poster_path = film_data.get('poster_path')
@@ -926,19 +947,3 @@ elif selection == 'RECHERCHE PAR FILM':
         else:
             st.write("Aucune affiche trouvée pour ce film.")  # message si pas d'affiche trouvée"
 
-    st.divider()
-
-    url_video = f"https://api.themoviedb.org/3/movie/{film_id}/videos"
-    response_video = requests.get(url_video, params={'api_key': my_api_key, 'language': 'fr-FR'})
-    if response_video.status_code == 200:
-        video_data = response_video.json().get('results', [])
-        trailers = [
-            ele for ele in video_data if ele['type'] == 'Trailer' and ele['site'] == 'YouTube'
-            ]
-        if trailers:
-            trailer_key = trailers[0]['key']
-            youtube_url = f"https://www.youtube.com/watch?v={trailer_key}"
-            st.subheader('Bande-annonce:')
-            st.video(youtube_url)
-        else:
-            st.write('Aucune bande-annonce disponible pour ce film')
