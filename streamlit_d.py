@@ -417,7 +417,7 @@ elif selection == 'DRAME':
 
                     # Utilisation de HTML pour ajuster la taille de la vidéo
                     st.markdown(f"""
-                        <br><br><br><iframe width="500" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <br><br><br><iframe width="400" height="200" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     """, unsafe_allow_html=True)
                 else:
                     st.write('Aucune bande-annonce disponible pour ce film')
@@ -553,7 +553,7 @@ elif selection == 'COMEDIE':
 
                     # Utilisation de HTML pour ajuster la taille de la vidéo
                     st.markdown(f"""
-                        <br><br><br><iframe width="500" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <br><br><br><iframe width="400" height="200" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     """, unsafe_allow_html=True)
                 else:
                     st.write('Aucune bande-annonce disponible pour ce film')
@@ -679,7 +679,7 @@ elif selection == "ACTION / AVENTURE":
 
                     # Utilisation de HTML pour ajuster la taille de la vidéo
                     st.markdown(f"""
-                        <br><br><br><iframe width="500" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <br><br><br><iframe width="400" height="200" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     """, unsafe_allow_html=True)
                 else:
                     st.write('Aucune bande-annonce disponible pour ce film')
@@ -808,7 +808,7 @@ elif selection == 'THRILLER / CRIME':
 
                     # Utilisation de HTML pour ajuster la taille de la vidéo
                     st.markdown(f"""
-                        <br><br><br><iframe width="(00" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <br><br><br><iframe width="400" height="200" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     """, unsafe_allow_html=True)
                 else:
                     st.write('Aucune bande-annonce disponible pour ce film')
@@ -930,7 +930,7 @@ elif selection == 'RECHERCHE PAR FILM':
 
                 # Utilisation de HTML pour ajuster la taille de la vidéo
                 st.markdown(f"""
-                    <br><br><br><iframe width="500" height="400" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <br><br><br><iframe width="400" height="200" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 """, unsafe_allow_html=True)
             else:
                 st.write('Aucune bande-annonce disponible pour ce film')
