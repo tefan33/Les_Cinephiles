@@ -403,9 +403,7 @@ elif selection == 'RECHERCHE DE FILM':
                 youtube_url = f"https://www.youtube.com/embed/{trailer_key}"
 
                 # Utilisation de HTML pour ajuster la taille de la vidéo
-                st.markdown(f"""
-                    <br><br><br><iframe width="400" height="200" src="{youtube_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                """, unsafe_allow_html=True)
+                st.components.v1.iframe(youtube_url, width=500, height=300)
             else:
                 st.write('Aucune bande-annonce disponible pour ce film')
 
